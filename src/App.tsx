@@ -139,7 +139,7 @@ const isThereALoop = (formattedHTML) => {
 const replaceVars = (formattedHTML) => {
   const replaced = {
     ...formattedHTML,
-    content: formattedHTML.content.map((node, i) => {
+    content: formattedHTML.content.map((node) => {
       if (node.text === REG.LOGO)
         return {
           image: logo64,
@@ -272,8 +272,8 @@ export default function App() {
       while (isThereALoop(replacedLoops)) {
         replacedLoops = replaceLoops(replacedVars);
       }
-      console.log(replacedLoops);
       const finalDoc = {
+        ...replacedLoops,
         content: replacedLoops.content.map((node) => {
           if (!node.text) return node;
           return {
