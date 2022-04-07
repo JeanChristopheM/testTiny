@@ -491,7 +491,7 @@ export default function App() {
           content_css: "/mycss.css",
         }}
       />
-      <button onClick={makePDF}>Log editor content</button>
+      <button onClick={makePDF}>View PDF</button>
     </>
   );
 }

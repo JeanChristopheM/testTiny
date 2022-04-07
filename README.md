@@ -6,4 +6,5 @@
 4. rename `env_sample.ts` into `env.ts`
 5. (optional) replace `api_key_here` in `env_sample.ts` by your API_KEY
 6. execute `npm run dev`
-7. profit ?
+7. open your browser on http://localhost:3000/
+8. clic the `View PDF` button at the bottom to.. view the PDF
