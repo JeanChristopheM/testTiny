@@ -4,7 +4,8 @@
 
 {{logoImage-centered}}
 
-{{tocItem->}}Lease details : 
+{{tocItem->}}Lease details :
+
 Entre d'une part 
 
 {{loop}}
@@ -30,8 +31,3 @@ Le bailleur
 {{signatureImage}}
 
 Le preneur
-
-
-
-
-
