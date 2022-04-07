@@ -1,0 +1,7 @@
+Un truc que j'ai remarqué, c'est que si les balises {{node}} sont collées, getValue() crash :
+
+mini remarque sur le checkLoops(), plutôt que de loop sur tout le document pour compter les node text, p-e peupler tes arrays en amont lors de l'ajout du node, ici ça n'a pas l'air d'impacter de trop mais à voir sur des pdfs plus longs
+
+same shit pour le isThereALoop(), suffit de check le contenu de tes arrays plutôt que de looper sur le body
+
+idéalement il faudrait pouvoir définir sur quelle variable on veut looper, ça doit être flexible, genre {{loop on="tenants"}}
