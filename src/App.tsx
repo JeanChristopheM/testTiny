@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import htmlToPdfmake from "html-to-pdfmake";
 import { usePdfMake } from "./usePdfMake";
 import { logo64, signature64 } from "./images";
 import { API_KEY } from "../env";
+import { example } from "../example";
 
 /*
  * Constants
@@ -252,7 +253,6 @@ export default function App() {
   const makePDF = async () => {
     if (editorRef.current) {
       let rawHTML = editorRef.current.getContent();
-      //console.log(html);
 
       const formattedHTML = {
         content: await htmlToPdfmake(rawHTML),
@@ -294,7 +294,7 @@ export default function App() {
       <Editor
         apiKey={API_KEY}
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue=""
+        initialValue={example}
         init={{
           height: 500,
           menubar: false,
