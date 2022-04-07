@@ -10,24 +10,39 @@ import { API_KEY } from "../env";
  */
 const tenants = [
   {
-    name: "John",
+    name: "John Quelquechose",
     amount: 320,
-    garant: "Dad",
+    garant: "Son père",
+    nn: "52.18.94-648.12",
+    blocation: "Liège",
+    adress: "12, rue des parfums, Anderlecht, Bruxelles",
+    cellphone: "0487/92.15.74",
   },
   {
-    name: "Betty",
+    name: "Betty Boop",
     amount: 340,
-    garant: "Cousin",
+    garant: "Sa cousine",
+    nn: "22.11.66-481.26",
+    blocation: "Liège",
+    adress: "25, avenue ici, Jette, Bruxelles",
+    cellphone: "0495/78.12.64",
   },
   {
-    name: "Albert",
+    name: "Albert Jacob",
     amount: 420,
-    garant: "Mommy",
+    garant: "Sa mère",
+    nn: "19.12.72-192.22",
+    blocation: "Liège",
+    adress: "96, clos des lilas, Namur",
+    cellphone: "0472/12.64.28",
   },
 ];
 const owner = {
-  name: "Malkovich",
-  address: "39, avenue Blonden, 3000, Liège.",
+  name: "Ivan Malkovich",
+  nn: "19.12.47-648.11",
+  blocation: "Liège",
+  cellphone: "0448/11.66.11",
+  adress: "39, avenue Blonden, 3000, Liège.",
 };
 const REG = {
   LOGO: "{{logoImage}}",
@@ -40,10 +55,19 @@ const REG = {
   LOOP_START: "{{loop}}",
   LOOP_END: "{{loopEnd}}",
   LOOP_N: "{{loop-n}}",
-  TENANT: "{{tenantName}}",
+  TENANT_NAME: "{{tenantName}}",
+  TENANT_NN: "{{tenantNN}}",
+  TENANT_BLOCATION: "{{tenantBornLocation}}",
+  TENANT_ADRESS: "{{tenantAdress}}",
+  TENANT_CELLPHONE: "{{tenantTelephone}}",
+
   AMOUNT: "{{tenantAmount}}",
   GARANT: "{{tenantWarrantor}}",
-  OWNER: "{{owner}}",
+  OWNER_NAME: "{{ownerName}}",
+  OWNER_NN: "{{ownerNN}}",
+  OWNER_BLOCATION: "{{ownerBornLocation}}",
+  OWNER_ADRESS: "{{ownerAdress}}",
+  OWNER_CELLPHONE: "{{ownerTelephone}}",
 };
 
 /*
@@ -53,14 +77,30 @@ const REG = {
  */
 const getValue = (regex, i) => {
   switch (regex) {
-    case REG.TENANT:
+    case REG.TENANT_NAME:
       return tenants[i].name;
+    case REG.TENANT_NN:
+      return tenants[i].nn;
+    case REG.TENANT_BLOCATION:
+      return tenants[i].blocation;
+    case REG.TENANT_ADRESS:
+      return tenants[i].adress;
+    case REG.TENANT_CELLPHONE:
+      return tenants[i].cellphone;
     case REG.AMOUNT:
       return tenants[i].amount;
     case REG.GARANT:
       return tenants[i].garant;
-    case REG.OWNER:
+    case REG.OWNER_NAME:
       return owner.name;
+    case REG.OWNER_NN:
+      return owner.nn;
+    case REG.OWNER_BLOCATION:
+      return owner.blocation;
+    case REG.OWNER_ADRESS:
+      return owner.adress;
+    case REG.OWNER_CELLPHONE:
+      return owner.cellphone;
     case REG.LOOP_N:
       return tenants.length - i;
     default:
@@ -140,11 +180,6 @@ const replaceVars = (formattedHTML) => {
           text: node.text.replace(REG.TOC_ITEM, ""),
           tocItem: true,
         };
-      if (node.text.includes(REG.OWNER))
-        return {
-          ...node,
-          text: node.text.replace(REG.OWNER, owner.name),
-        };
       return node;
     }),
     styles: {
@@ -166,7 +201,7 @@ const replaceVars = (formattedHTML) => {
  * Takes a string and replace all occurences of variables
  * with actual values
  */
-const replaceVarsInString = (string, x) => {
+const replaceVarsInString = (string, x?) => {
   let replaced = string;
   Object.keys(REG).forEach((regex) => {
     if (string.includes(REG[regex])) {
@@ -230,7 +265,6 @@ export default function App() {
         );
         return;
       }
-      console.log(formattedHTML);
       const replacedVars = replaceVars(formattedHTML);
       /* console.log("REPLACED VARIABLES");
       console.log(replacedVars); */
@@ -238,7 +272,17 @@ export default function App() {
       while (isThereALoop(replacedLoops)) {
         replacedLoops = replaceLoops(replacedVars);
       }
-      const pdf = pdfMake.createPdf(replacedLoops);
+      console.log(replacedLoops);
+      const finalDoc = {
+        content: replacedLoops.content.map((node) => {
+          if (!node.text) return node;
+          return {
+            ...node,
+            text: replaceVarsInString(node.text),
+          };
+        }),
+      };
+      const pdf = pdfMake.createPdf(finalDoc);
 
       console.log(pdf);
 
